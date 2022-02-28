@@ -1,67 +1,58 @@
 package com.noroff.noroffassignment_7.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Getter @Setter
     private Integer id;
 
-    @Column
+    @Getter @Setter
     @Size(min = 1, max = 45)
-    @Getter
-    @Setter
+    @Column(nullable = false)
     private String title;
 
-    @Column
-    @Getter
-    @Setter
+    @Getter @Setter
+    @Column(nullable = false)
     private String genre;
 
-    @Column
+    @Getter @Setter
     @Size(min = 2, max = 4)
-    @Getter
-    @Setter
+    @Column(nullable = false)
     private Integer releaseYear;
 
-    @Column
+    @Getter @Setter
     @Size(min = 1, max = 45)
-    @Getter
-    @Setter
+    @Column(nullable = false)
     private String directorName;
 
+    @Getter @Setter
     @Column
-    @Getter
-    @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String imageUrl;
 
+    @Getter @Setter
     @Column
-    @Getter
-    @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String trailerUrl;
 
-    /*@ManyToOne
-    @JoinTable(
-            name = "movie_franchise",
-            joinColumns = { @JoinColumn(name = "movie_id") },
-            inverseJoinColumns = { @JoinColumn(name = "franchise_id" ) }
-    )
-    private Franchise franchise;*/
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "franchise_movies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Franchise franchise;
 
-    /*@ManyToMany
-    @JoinTable(
-            name = "movie_characters",
-            joinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "character_id") },
-            inverseJoinColumns = { @JoinColumn(name = "character_id", referencedColumnName = "movie_id") }
-    )
-    private List<Character> characters;*/
+    @Getter @Setter
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "movie_characters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Character> characters;
 }
