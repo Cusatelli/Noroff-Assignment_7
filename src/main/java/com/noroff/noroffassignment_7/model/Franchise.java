@@ -1,18 +1,23 @@
 package com.noroff.noroffassignment_7.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "franchise", schema = "public")
 public class Franchise {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
+    @Column(name = "id")
     private Integer id;
 
     @Getter @Setter
@@ -26,8 +31,12 @@ public class Franchise {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @Getter @Setter
     @OneToMany(mappedBy = "franchise", fetch = FetchType.LAZY)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<>();
+
+    @JsonGetter("movies")
+    public List<String> getMoviesList() {
+        return movies.stream().map(movie -> "/movie/" + movie.getId()).collect(Collectors.toList());
+    }
 }
