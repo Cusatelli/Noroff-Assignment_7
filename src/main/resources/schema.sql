@@ -26,10 +26,10 @@ CREATE TABLE franchise (
 
 CREATE TABLE movie_character (
     movie_id BIGINT NOT NULL,
-    character_id VARCHAR
+    character_id BIGINT
 );
 
 CREATE TABLE movie_franchise (
      franchise_id BIGINT NOT NULL,
-     movie_id VARCHAR
+     movie_id BIGINT
 );
