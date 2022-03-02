@@ -22,7 +22,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Getter @Setter
     @Size(min = 1, max = 45)
