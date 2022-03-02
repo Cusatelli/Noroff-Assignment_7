@@ -36,7 +36,7 @@ public class Franchise {
     private List<Movie> movies = new ArrayList<>();
 
     @JsonGetter("movies")
-    public List<String> getMoviesList() {
+    public List<String> getMovies() {
         return movies.stream().map(movie -> "/movie/" + movie.getId()).collect(Collectors.toList());
     }
 }
