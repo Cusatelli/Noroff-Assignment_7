@@ -83,10 +83,6 @@ public class MovieController {
         if (!movieRepository.existsById(id)){ return false; }
 
         movieRepository.deleteById(id);
-
-        if (movieRepository.existsById(id)){
-            return false;
-        }
-        return true;
+        return !movieRepository.existsById(id);
     }
 }
