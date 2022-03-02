@@ -36,15 +36,7 @@ public class MovieController {
             movie = movieRepository.findById(movieId).get();
         }
 
-        List<Character> characters = new ArrayList<>();
-        for (int i = 0; i < movie.getCharacters().size(); i++) {
-            Long characterId = Long.valueOf(movie.getCharacters().get(i).replace("/character/", ""));
-            if(characterRepository.findById(characterId).isPresent()) {
-                characters.add(characterRepository.findById(characterId).get());
-            }
-        }
-
-        return characters;
+        return getCharactersFromMovie(movie, characterRepository);
     }
 
     @PostMapping("/")
@@ -84,5 +76,16 @@ public class MovieController {
 
         movieRepository.deleteById(id);
         return !movieRepository.existsById(id);
+    }
+
+    static List<Character> getCharactersFromMovie(Movie movie, CharacterRepository characterRepository) {
+        List<Character> characters = new ArrayList<>();
+        for (int i = 0; i < movie.getCharacters().size(); i++) {
+            Long characterId = Long.valueOf(movie.getCharacters().get(i).replace("/character/", ""));
+            if(characterRepository.findById(characterId).isPresent()) {
+                characters.add(characterRepository.findById(characterId).get());
+            }
+        }
+        return characters;
     }
 }
