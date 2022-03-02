@@ -1,10 +1,8 @@
 package com.noroff.noroffassignment_7.controller;
 
-import com.noroff.noroffassignment_7.model.Character;
 import com.noroff.noroffassignment_7.model.Franchise;
 import com.noroff.noroffassignment_7.repository.FranchiseRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +11,11 @@ import java.util.List;
 @Tag(name = "Franchise")
 @RequestMapping("/franchise")
 public class FranchiseController {
+    private final FranchiseRepository franchiseRepository;
 
-    @Autowired
-    private FranchiseRepository franchiseRepository;
+    public FranchiseController(FranchiseRepository franchiseRepository) {
+        this.franchiseRepository = franchiseRepository;
+    }
 
     @GetMapping("/")
     public List<Franchise> getFranchise() {
@@ -55,9 +55,6 @@ public class FranchiseController {
 
         franchiseRepository.deleteById(id);
 
-        if (franchiseRepository.existsById(id)){
-            return false;
-        }
-        return true;
+        return !franchiseRepository.existsById(id);
     }
 }

@@ -3,7 +3,6 @@ package com.noroff.noroffassignment_7.controller;
 import com.noroff.noroffassignment_7.model.Character;
 import com.noroff.noroffassignment_7.repository.CharacterRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +11,11 @@ import java.util.List;
 @Tag(name = "Character")
 @RequestMapping("/character")
 public class CharacterController {
+    private final CharacterRepository characterRepository;
 
-    @Autowired
-    private CharacterRepository characterRepository;
+    public CharacterController(CharacterRepository characterRepository) {
+        this.characterRepository = characterRepository;
+    }
 
     @GetMapping("/")
     public List<Character> getCharacter() {
@@ -56,9 +57,6 @@ public class CharacterController {
 
         characterRepository.deleteById(id);
 
-        if (characterRepository.existsById(id)){
-            return false;
-        }
-        return true;
+        return !characterRepository.existsById(id);
     }
 }

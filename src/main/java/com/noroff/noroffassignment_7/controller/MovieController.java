@@ -5,7 +5,6 @@ import com.noroff.noroffassignment_7.model.Movie;
 import com.noroff.noroffassignment_7.repository.CharacterRepository;
 import com.noroff.noroffassignment_7.repository.MovieRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,12 +14,13 @@ import java.util.List;
 @Tag(name = "Movie")
 @RequestMapping("/movie")
 public class MovieController {
+    private final MovieRepository movieRepository;
+    private final CharacterRepository characterRepository;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
-    private CharacterRepository characterRepository;
+    public MovieController(MovieRepository movieRepository, CharacterRepository characterRepository) {
+        this.movieRepository = movieRepository;
+        this.characterRepository = characterRepository;
+    }
 
     @GetMapping("/")
     public List<Movie> getMovie() {
