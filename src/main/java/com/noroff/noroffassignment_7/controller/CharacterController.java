@@ -1,7 +1,6 @@
 package com.noroff.noroffassignment_7.controller;
 
 import com.noroff.noroffassignment_7.model.Character;
-import com.noroff.noroffassignment_7.model.Franchise;
 import com.noroff.noroffassignment_7.repository.CharacterRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class CharacterController {
     }
 
     @GetMapping("/{id}")
-    public Character getCharacterById(@PathVariable Integer id) {
+    public Character getCharacterById(@PathVariable Long id) {
         if(!characterRepository.existsById((id))) { return null; }
 
         if(characterRepository.findById(id).isPresent()) {
@@ -38,17 +37,21 @@ public class CharacterController {
     }
 
     @PostMapping("/{id}/update")
-    public Character Update(@RequestBody Character character, @PathVariable("id") Integer id){
-        Character original = characterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        original.setId(character.getId());
-        original.setName(character.getName());
-        original.setAlias(character.getAlias());
-        original.setGender(character.getGender());
+    public Character Update(@RequestBody Character character, @PathVariable("id") Long id){
+        if(!characterRepository.existsById((id))) { return null; }
+        if (characterRepository.findById(id).isPresent()) {
+            Character original = characterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+            original.setId(character.getId());
+            original.setName(character.getName());
+            original.setAlias(character.getAlias());
+            original.setGender(character.getGender());
         return characterRepository.save(original);
+        }
+        return null;
     }
 
     @DeleteMapping("/{id}/delete")
-    public Boolean Delete(@PathVariable("id") Integer id){
+    public Boolean Delete(@PathVariable("id") Long id){
         if (!characterRepository.existsById(id)){ return false; }
 
         characterRepository.deleteById(id);
