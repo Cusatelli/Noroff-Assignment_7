@@ -31,7 +31,15 @@ public class Franchise {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @OneToMany(mappedBy = "franchise", fetch = FetchType.LAZY)
+    @Setter
+    @OneToMany(
+        mappedBy = "franchise",
+        fetch = FetchType.LAZY,
+        cascade = {
+                CascadeType.MERGE,
+                CascadeType.PERSIST
+        }
+    )
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Movie> movies = new ArrayList<>();
 
