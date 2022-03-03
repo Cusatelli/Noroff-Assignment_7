@@ -53,6 +53,7 @@ public class Movie {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String trailerUrl;
 
+    @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_franchise",
@@ -70,12 +71,6 @@ public class Movie {
     )
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Character> characters = new ArrayList<>();
-
-    @JsonGetter("franchise")
-    public String getFranchise() {
-        if(franchise == null) { return null; }
-        return "/franchise/" + franchise.getId();
-    }
 
     @JsonGetter("characters")
     public List<String> getCharacters() {
