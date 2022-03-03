@@ -22,84 +22,72 @@ public class MovieController {
         this.characterRepository = characterRepository;
     }
 
-    @GetMapping("/")
-    public List<Movie> getMovie() {
+    @GetMapping
+    public List<Movie> getMovies() {
         return movieRepository.findAll();
+    }
+
+    @PostMapping
+    public Movie createMovie(@RequestBody Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    @GetMapping("/{movieId}")
+    public Movie getMovieById(@PathVariable Long movieId) {
+        if(!movieRepository.existsById((movieId))) { return null; }
+
+        return movieRepository.getById(movieId);
+    }
+
+    @PostMapping("/{movieId}")
+    public Movie updateMovie(@RequestBody Movie movie, @PathVariable Long movieId){
+        if(!movieRepository.existsById((movieId))) { return null; }
+
+        Movie original = movieRepository.getById(movieId);
+        original.setTitle(movie.getTitle());
+        original.setGenre(movie.getGenre());
+        original.setReleaseYear(movie.getReleaseYear());
+        original.setDirectorName(movie.getDirectorName());
+        original.setImageUrl(movie.getImageUrl());
+        original.setTrailerUrl(movie.getTrailerUrl());
+
+        return movieRepository.save(original);
+    }
+
+    @DeleteMapping("/{movieId}")
+    public Boolean deleteMovie(@PathVariable Long movieId){
+        if (!movieRepository.existsById(movieId)){ return false; }
+
+        movieRepository.deleteById(movieId);
+        return !movieRepository.existsById(movieId);
     }
 
     @GetMapping("/{movieId}/characters")
     public List<Character> getAllCharactersInMovie(@PathVariable Long movieId) {
         if(!movieRepository.existsById(movieId)) { return null; }
 
-        Movie movie = new Movie();
-        if(movieRepository.findById(movieId).isPresent()) {
-            movie = movieRepository.findById(movieId).get();
-        }
-
-        return getCharactersFromMovie(movie, characterRepository);
-    }
-
-    @PostMapping("/")
-    public Movie createMovie(@RequestBody Movie movie) {
-        return movieRepository.save(movie);
-    }
-
-    @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable Long id) {
-        if(!movieRepository.existsById((id))) { return null; }
-
-        if(movieRepository.findById(id).isPresent()) {
-            return movieRepository.findById(id).get();
-        }
-        return null;
+        return getCharactersFromMovie(movieRepository.getById(movieId), characterRepository);
     }
 
     @PatchMapping("/{movieId}/characters")
     public Movie updateCharactersInMovie(@RequestBody Long[] characterIds, @PathVariable Long movieId) {
-        if (movieRepository.findById(movieId).isEmpty()) { return null; }
+        if (!movieRepository.existsById(movieId)) { return null; }
 
         List<Character> characters = new ArrayList<>();
         for (Long characterId: characterIds) {
-            if (characterRepository.findById(characterId).isPresent()) {
-                Character character = characterRepository.findById(characterId).get();
-                characters.add(character);
-            }
+            Character character = characterRepository.getById(characterId);
+            characters.add(character);
         }
-        Movie movie = movieRepository.findById(movieId).get();
+        Movie movie = movieRepository.getById(movieId);
         movie.setCharacters(characters);
 
         return movieRepository.save(movie);
     }
 
-    @PostMapping("/{id}/update")
-    public Movie Update(@RequestBody Movie movie, @PathVariable("id") Long id){
-        if(!movieRepository.existsById((id))) { return null; }
-        if (movieRepository.findById(id).isPresent()) {
-            Movie original = movieRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            original.setId(movie.getId());
-            original.setTitle(movie.getTitle());
-            original.setGenre(movie.getGenre());
-            original.setReleaseYear(movie.getReleaseYear());
-            original.setDirectorName(movie.getDirectorName());
-            original.setImageUrl(movie.getImageUrl());
-            original.setTrailerUrl(movie.getTrailerUrl());
-            return movieRepository.save(original);
-        }
-        return null;
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public Boolean Delete(@PathVariable("id") Long id){
-        if (!movieRepository.existsById(id)){ return false; }
-
-        movieRepository.deleteById(id);
-        return !movieRepository.existsById(id);
-    }
-
     static List<Character> getCharactersFromMovie(Movie movie, CharacterRepository characterRepository) {
         List<Character> characters = new ArrayList<>();
         for (int i = 0; i < movie.getCharacters().size(); i++) {
-            Long characterId = Long.valueOf(movie.getCharacters().get(i).replace("/character/", ""));
+            Long characterId = movie.getCharacters().get(i);
             if(characterRepository.findById(characterId).isPresent()) {
                 characters.add(characterRepository.findById(characterId).get());
             }

@@ -27,7 +27,7 @@ public class FranchiseController {
     }
 
     @GetMapping
-    public List<Franchise> getFranchise() {
+    public List<Franchise> getFranchises() {
         return franchiseRepository.findAll();
     }
 

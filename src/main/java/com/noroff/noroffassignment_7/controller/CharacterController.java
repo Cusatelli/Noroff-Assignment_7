@@ -17,46 +17,41 @@ public class CharacterController {
         this.characterRepository = characterRepository;
     }
 
-    @GetMapping("/")
-    public List<Character> getCharacter() {
+    @GetMapping
+    public List<Character> getCharacters() {
         return characterRepository.findAll();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public Character createCharacter(@RequestBody Character character) {
         return characterRepository.save(character);
     }
 
-    @GetMapping("/{id}")
-    public Character getCharacterById(@PathVariable Long id) {
-        if(!characterRepository.existsById((id))) { return null; }
+    @GetMapping("/{characterId}")
+    public Character getCharacterById(@PathVariable Long characterId) {
+        if(!characterRepository.existsById((characterId))) { return null; }
 
-        if(characterRepository.findById(id).isPresent()) {
-            return characterRepository.findById(id).get();
-        }
-        return null;
+        return characterRepository.getById(characterId);
     }
 
-    @PostMapping("/{id}/update")
-    public Character Update(@RequestBody Character character, @PathVariable("id") Long id){
-        if(!characterRepository.existsById((id))) { return null; }
-        if (characterRepository.findById(id).isPresent()) {
-            Character original = characterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            original.setId(character.getId());
-            original.setName(character.getName());
-            original.setAlias(character.getAlias());
-            original.setGender(character.getGender());
+    @PostMapping("/{characterId}")
+    public Character updateCharacter(@RequestBody Character character, @PathVariable Long characterId){
+        if(!characterRepository.existsById((characterId))) { return null; }
+
+        Character original = characterRepository.getById(characterId);
+        original.setName(character.getName());
+        original.setAlias(character.getAlias());
+        original.setGender(character.getGender());
+
         return characterRepository.save(original);
-        }
-        return null;
     }
 
-    @DeleteMapping("/{id}/delete")
-    public Boolean Delete(@PathVariable("id") Long id){
-        if (!characterRepository.existsById(id)){ return false; }
+    @DeleteMapping("/{characterId}")
+    public Boolean deleteCharacter(@PathVariable Long characterId){
+        if (!characterRepository.existsById(characterId)){ return false; }
 
-        characterRepository.deleteById(id);
+        characterRepository.deleteById(characterId);
 
-        return !characterRepository.existsById(id);
+        return !characterRepository.existsById(characterId);
     }
 }
