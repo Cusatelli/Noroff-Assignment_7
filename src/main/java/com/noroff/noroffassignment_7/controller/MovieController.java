@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "Movie")
-@RequestMapping("/movie")
+@RequestMapping("/api/movie")
 public class MovieController {
     private final MovieRepository movieRepository;
     private final CharacterRepository characterRepository;

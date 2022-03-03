@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "Franchise")
-@RequestMapping("/franchise")
+@RequestMapping("/api/franchise")
 public class FranchiseController {
     private final FranchiseRepository franchiseRepository;
     private final MovieRepository movieRepository;

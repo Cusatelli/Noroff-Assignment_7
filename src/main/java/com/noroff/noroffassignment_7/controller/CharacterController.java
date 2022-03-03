@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "Character")
-@RequestMapping("/character")
+@RequestMapping("/api/character")
 public class CharacterController {
     private final CharacterRepository characterRepository;
 
