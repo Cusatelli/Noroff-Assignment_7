@@ -53,6 +53,24 @@ public class MovieController {
         }
         return null;
     }
+
+    @PatchMapping("/{movieId}/characters")
+    public Movie updateCharactersInMovie(@RequestBody Long[] characterIds, @PathVariable Long movieId) {
+        if (movieRepository.findById(movieId).isEmpty()) { return null; }
+
+        List<Character> characters = new ArrayList<>();
+        for (Long characterId: characterIds) {
+            if (characterRepository.findById(characterId).isPresent()) {
+                Character character = characterRepository.findById(characterId).get();
+                characters.add(character);
+            }
+        }
+        Movie movie = movieRepository.findById(movieId).get();
+        movie.setCharacters(characters);
+
+        return movieRepository.save(movie);
+    }
+
     @PostMapping("/{id}/update")
     public Movie Update(@RequestBody Movie movie, @PathVariable("id") Long id){
         if(!movieRepository.existsById((id))) { return null; }
