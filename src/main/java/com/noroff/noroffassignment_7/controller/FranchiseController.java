@@ -66,26 +66,37 @@ public class FranchiseController {
         return null;
     }
 
-    @PostMapping("/{id}/update")
-    public Franchise Update(@RequestBody Franchise franchise, @PathVariable("id") Long id){
-        if(!franchiseRepository.existsById((id))) { return null; }
-        if (franchiseRepository.findById(id).isPresent()) {
-            Franchise original = franchiseRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            original.setId(franchise.getId());
-            original.setName(franchise.getName());
-            original.setDescription(franchise.getDescription());
-        return franchiseRepository.save(original);
+    @PatchMapping("/{franchiseId}/movies")
+    public Franchise updateMoviesInFranchise(@PathVariable Long franchiseId, @RequestBody Long[] movieIds) {
+        Franchise franchise = franchiseRepository.getById(franchiseId);
+
+        for (int i = 0; i < franchise.getMovies().size(); i++) {
+            Movie movie = movieRepository.getById(Long.valueOf(franchise.getMovies().get(i).replace("/movie/", "")));
+
+            movie.setFranchise(null);
+            movieRepository.save(movie);
         }
-        return null;
+
+        List<Movie> movies = new ArrayList<>();
+        for (Long movieId: movieIds) {
+            Movie movie = movieRepository.getById(movieId);
+            movies.add(movie);
+
+            movie.setFranchise(franchise);
+            movieRepository.save(movie);
+        }
+        franchise.setMovies(movies);
+
+        return franchiseRepository.save(franchise);
     }
 
-    @DeleteMapping("/{id}/delete")
-    public Boolean Delete(@PathVariable("id") Long id){
-        if (!franchiseRepository.existsById(id)){ return false; }
+    @DeleteMapping("/{franchiseId}/")
+    public Boolean deleteFranchise(@PathVariable Long franchiseId){
+        if (!franchiseRepository.existsById(franchiseId)){ return false; }
 
-        franchiseRepository.deleteById(id);
+        franchiseRepository.deleteById(franchiseId);
 
-        return !franchiseRepository.existsById(id);
+        return !franchiseRepository.existsById(franchiseId);
     }
 
     private List<Movie> getAllMovies(Long franchiseId) {
