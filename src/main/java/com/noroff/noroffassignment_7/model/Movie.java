@@ -63,6 +63,7 @@ public class Movie {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Franchise franchise;
 
+    @Setter
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_character",
@@ -73,12 +74,7 @@ public class Movie {
     private List<Character> characters = new ArrayList<>();
 
     @JsonGetter("characters")
-    public List<String> getCharacters() {
-        return characters.stream().map(characters -> "/character/" + characters.getId()).collect(Collectors.toList());
-    }
-
-    @JsonSetter("characters")
-    public void setCharacters(List<Character> characters){
-        this.characters = characters;
+    public List<Long> getCharacters() {
+        return characters.stream().map(Character::getId).collect(Collectors.toList());
     }
 }
