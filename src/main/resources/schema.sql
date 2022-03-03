@@ -15,13 +15,15 @@ CREATE TABLE movie (
     release_year INT DEFAULT (-1),
     director_name VARCHAR DEFAULT (''),
     image_url VARCHAR DEFAULT NULL,
-    trailer_url VARCHAR DEFAULT NULL
+    trailer_url VARCHAR DEFAULT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE franchise (
    id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
    name VARCHAR DEFAULT (''),
-   description VARCHAR DEFAULT NULL
+   description VARCHAR DEFAULT NULL,
+   PRIMARY KEY (id)
 );
 
 CREATE TABLE movie_character (
@@ -30,6 +32,6 @@ CREATE TABLE movie_character (
 );
 
 CREATE TABLE movie_franchise (
-     franchise_id BIGINT NOT NULL,
-     movie_id BIGINT
+    franchise_id BIGINT NOT NULL,
+    movie_id BIGINT
 );
