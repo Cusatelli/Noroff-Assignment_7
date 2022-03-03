@@ -2,6 +2,7 @@ package com.noroff.noroffassignment_7.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -79,5 +80,10 @@ public class Movie {
     @JsonGetter("characters")
     public List<String> getCharacters() {
         return characters.stream().map(characters -> "/character/" + characters.getId()).collect(Collectors.toList());
+    }
+
+    @JsonSetter("characters")
+    public void setCharacters(List<Character> characters){
+        this.characters = characters;
     }
 }
