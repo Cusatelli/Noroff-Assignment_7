@@ -41,12 +41,20 @@ public class Character {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String imageUrl;
 
-    @ManyToMany(mappedBy = "characters", fetch = FetchType.LAZY)
+    @Setter
+    @ManyToMany(
+        mappedBy = "characters",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+        }
+    )
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Movie> movies = new ArrayList<>();
 
     @JsonGetter("movies")
-    public List<String> getMoviesList() {
-        return movies.stream().map(movie -> "/movie/" + movie.getId()).collect(Collectors.toList());
+    public List<Long> getMoviesList() {
+        return movies.stream().map(Movie::getId).collect(Collectors.toList());
     }
 }

@@ -26,9 +26,45 @@ public class FranchiseController {
         this.characterRepository = characterRepository;
     }
 
-    @GetMapping("/")
-    public List<Franchise> getFranchise() {
+    @GetMapping
+    public List<Franchise> getFranchises() {
         return franchiseRepository.findAll();
+    }
+
+    @PostMapping
+    public Franchise createFranchise(@RequestBody Franchise franchise) {
+        return franchiseRepository.save(franchise);
+    }
+
+    @GetMapping("/{franchiseId}")
+    public Franchise getFranchiseById(@PathVariable Long franchiseId) {
+        if(!franchiseRepository.existsById((franchiseId))) { return null; }
+
+        return franchiseRepository.getById(franchiseId);
+    }
+
+    @PatchMapping("/{franchiseId}")
+    public Franchise updateFranchise(@PathVariable Long franchiseId, @RequestBody Franchise franchise) {
+        if(!franchiseRepository.existsById(franchiseId)) { return null; }
+
+        Franchise franchiseToUpdate = franchiseRepository.getById(franchiseId);
+        if(isValid(franchise.getName())) {
+            franchiseToUpdate.setName(franchise.getName());
+        }
+        if(isValid(franchise.getDescription())) {
+            franchiseToUpdate.setDescription(franchise.getDescription());
+        }
+
+        return franchiseRepository.save(franchiseToUpdate);
+    }
+
+    @DeleteMapping("/{franchiseId}")
+    public Boolean deleteFranchise(@PathVariable Long franchiseId){
+        if (!franchiseRepository.existsById(franchiseId)){ return false; }
+
+        franchiseRepository.deleteById(franchiseId);
+
+        return !franchiseRepository.existsById(franchiseId);
     }
 
     @GetMapping("/{franchiseId}/movies")
@@ -36,6 +72,30 @@ public class FranchiseController {
         if(!franchiseRepository.existsById(franchiseId)) { return null; }
 
         return getAllMovies(franchiseId);
+    }
+
+    @PatchMapping("/{franchiseId}/movies")
+    public Franchise updateMoviesInFranchise(@PathVariable Long franchiseId, @RequestBody Long[] movieIds) {
+        Franchise franchise = franchiseRepository.getById(franchiseId);
+
+        for (int i = 0; i < franchise.getMovies().size(); i++) {
+            Movie movie = movieRepository.getById(franchise.getMovies().get(i));
+
+            movie.setFranchise(null);
+            movieRepository.save(movie);
+        }
+
+        List<Movie> movies = new ArrayList<>();
+        for (Long movieId: movieIds) {
+            Movie movie = movieRepository.getById(movieId);
+            movies.add(movie);
+
+            movie.setFranchise(franchise);
+            movieRepository.save(movie);
+        }
+        franchise.setMovies(movies);
+
+        return franchiseRepository.save(franchise);
     }
 
     @GetMapping("/{franchiseId}/movies/characters")
@@ -51,57 +111,20 @@ public class FranchiseController {
         return characters;
     }
 
-    @PostMapping("/")
-    public Franchise createFranchise(@RequestBody Franchise franchise) {
-        return franchiseRepository.save(franchise);
-    }
-
-    @GetMapping("/{id}")
-    public Franchise getFranchiseById(@PathVariable Long id) {
-        if(!franchiseRepository.existsById((id))) { return null; }
-
-        if(franchiseRepository.findById(id).isPresent()) {
-            return franchiseRepository.findById(id).get();
-        }
-        return null;
-    }
-
-    @PostMapping("/{id}/update")
-    public Franchise Update(@RequestBody Franchise franchise, @PathVariable("id") Long id){
-        if(!franchiseRepository.existsById((id))) { return null; }
-        if (franchiseRepository.findById(id).isPresent()) {
-            Franchise original = franchiseRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            original.setId(franchise.getId());
-            original.setName(franchise.getName());
-            original.setDescription(franchise.getDescription());
-        return franchiseRepository.save(original);
-        }
-        return null;
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public Boolean Delete(@PathVariable("id") Long id){
-        if (!franchiseRepository.existsById(id)){ return false; }
-
-        franchiseRepository.deleteById(id);
-
-        return !franchiseRepository.existsById(id);
-    }
-
     private List<Movie> getAllMovies(Long franchiseId) {
-        Franchise franchise = new Franchise();
-        if(franchiseRepository.findById(franchiseId).isPresent()) {
-            franchise = franchiseRepository.findById(franchiseId).get();
-        }
+        Franchise franchise = franchiseRepository.getById(franchiseId);
 
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < franchise.getMovies().size(); i++) {
-            Long movieId = Long.valueOf(franchise.getMovies().get(i).replace("/movie/", ""));
-            if(movieRepository.findById(movieId).isPresent()) {
-                movies.add(movieRepository.findById(movieId).get());
-            }
+            Long movieId = franchise.getMovies().get(i);
+            movies.add(movieRepository.getById(movieId));
         }
 
+        franchise.setMovies(movies);
         return movies;
+    }
+
+    private boolean isValid(String str) {
+        return !str.isEmpty() && !str.isBlank() && !str.equals("string");
     }
 }

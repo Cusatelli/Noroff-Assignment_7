@@ -31,12 +31,20 @@ public class Franchise {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @OneToMany(mappedBy = "franchise", fetch = FetchType.LAZY)
+    @Setter
+    @OneToMany(
+        mappedBy = "franchise",
+        fetch = FetchType.LAZY,
+        cascade = {
+                CascadeType.MERGE,
+                CascadeType.PERSIST
+        }
+    )
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Movie> movies = new ArrayList<>();
 
     @JsonGetter("movies")
-    public List<String> getMovies() {
-        return movies.stream().map(movie -> "/movie/" + movie.getId()).collect(Collectors.toList());
+    public List<Long> getMovies() {
+        return movies.stream().map(Movie::getId).collect(Collectors.toList());
     }
 }
