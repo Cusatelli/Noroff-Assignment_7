@@ -21,12 +21,12 @@ public class Franchise {
     private Long id;
 
     @Getter @Setter
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 50)
     @Column(nullable = false)
     private String name;
 
     @Getter @Setter
-    @Size(min = 1, max = 100)
+    @Size(max = 150)
     @Column
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;

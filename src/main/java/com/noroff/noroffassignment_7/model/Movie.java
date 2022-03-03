@@ -26,7 +26,7 @@ public class Movie {
     private Long id;
 
     @Getter @Setter
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 50)
     @Column(nullable = false)
     private String title;
 
@@ -39,7 +39,7 @@ public class Movie {
     private Integer releaseYear;
 
     @Getter @Setter
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(nullable = false)
     private String directorName;
 
