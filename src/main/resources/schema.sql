@@ -11,9 +11,9 @@ CREATE TABLE character (
 CREATE TABLE movie (
     id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(50) DEFAULT (''),
-    genre VARCHAR(50) DEFAULT (''),
+    genre VARCHAR DEFAULT (''),
     release_year INT DEFAULT (-1),
-    director_name VARCHAR(50) DEFAULT (''),
+    director_name VARCHAR(100) DEFAULT (''),
     image_url VARCHAR DEFAULT NULL,
     trailer_url VARCHAR DEFAULT NULL,
     PRIMARY KEY (id)
@@ -22,7 +22,7 @@ CREATE TABLE movie (
 CREATE TABLE franchise (
    id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
    name VARCHAR(50) DEFAULT (''),
-   description VARCHAR(50) DEFAULT NULL,
+   description VARCHAR(150) DEFAULT NULL,
    PRIMARY KEY (id)
 );
 
