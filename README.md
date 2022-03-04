@@ -23,6 +23,28 @@
 10. [Contact](#contact)
 
 # About the project
+### Movie Characters API
+Create a PostgreSQL database using Hibernate and expose it through a Web API. Follow the guidelines given below, feel 
+free to expand on the functionality. It must meet the minimum requirements prescribed.
+
+1. **Set up the development environment.**  
+Make sure you have installed at least the following tools:
+   * IntelliJ with Java 17
+   * PostgreSQL with PgAdmin
+2. **Optional: Database diagrams**  
+You can draw relationship diagrams of your database and include these in your GitLab repository.
+3. **Use Hibernate to create a database with the following minimum requirements (See Appendix A 
+for details):**
+   * Create models and Repositories to cater for the specifications in Appendix A.
+   * Create representations of domain object as to not overexpose your database data, this is detailed in Appendix B.
+You can make these changes at a later stage in the assignment (i.e. When you want to test the endpoints).
+4. **Create a Web API in Spring Web with the following minimum requirements (See Appendix B for 
+details):**
+   * Create controllers according to specifications in Appendix B.
+   * Swagger/Open API documentation.
+
+### Full PDF document:
+<a href="/resources/Assignment%203_Java_Web%20API%20creation%20with%20Hibernate.pdf">Assignment: Create a Web API and database with Spring.</a>
 
 # Build & Deploy
 ### STEP 1
