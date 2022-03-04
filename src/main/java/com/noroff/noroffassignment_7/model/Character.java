@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Creat a character class with fields id, name, alias, gender and imageUrl.
+ * Create a character class with fields id, name, alias, gender and imageUrl.
  * Use annotations in the fields, and relational database(ManyToMany) in movies.
  * One movie contains many characters and a character plays in multiple movies.
  */

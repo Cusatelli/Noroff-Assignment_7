@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Creat a movie class with fields id, title, genre, release year, director name, imageUrl, trailerUrl.
+ * Create a movie class with fields id, title, genre, release year, director name, imageUrl, trailerUrl.
  * Use annotations in the fields, and relational database in movies.
  * Franchise can include several movies, one movie contains many characters
  * and a character plays in multiple movies.

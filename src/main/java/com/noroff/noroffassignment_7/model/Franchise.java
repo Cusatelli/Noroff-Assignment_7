@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Creat a franchise class with fields id, name and description.
+ * Create a franchise class with fields id, name and description.
  * Use annotations in the fields, and relational database (ManyToMany) in movies.
- *One movie belongs to one franchise, but a franchise contains many movies.
+ * One movie belongs to one franchise, but a franchise contains many movies.
  * Use a list of movies and a get movie list method to get all movies in franchise.
  */
 @Entity
