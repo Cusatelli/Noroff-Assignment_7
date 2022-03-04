@@ -12,6 +12,7 @@
 
 # Table of Contents
 1. [About the Project](#about-the-project)
+2. [Build & Deploy](#build--deploy)
 2. [Install](#install)
 4. [Usage](#usage)
 5. [Maintainers](#maintainers)
@@ -22,14 +23,45 @@
 
 # About the project
 
-# Install
+# Build & Deploy
+### STEP 1
+```
+Build a configuration class that exports/adds basic data source object type to application
 ```
 
+### STEP 2
+```
+> Heroku container:push -a <APP-NAME-HEROKU> web
+
+Docker auto builds the image & pushes it to repository
+
+> Heroku container:release -a <APP-NAME-HEROKU> web
+
+In Heroku -> Overview > Configure Add-ons > search for ‘postgres’ > add postgres >
+Provides us with Config Var with database url.
+
+Dockerfile get from gitlab GregLinklater
+
+Config Vars:
+> DATABASE_URL = <Auto-Set-Above>
+> ISSUER_URL = <Security>
+> JWKS_URI = <Security>
+> CLIENT_ID = “client-id”
+> APP_ORIGIN = <Github-Pages-URL>
+
+Restart Dynos
+```
+
+# Install
+```
+git clone https://github.com/Cusatelli/Noroff-Assignment_7.git
+cd Noroff-Assignment_7
 ```
 
 # Usage
 ```
-
+Open IntelliJ IDEA navigate to /src/main/java/com/noroff/noroffassignment_7/Application.java
+Rigth click & press 'Run Application.java'
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
