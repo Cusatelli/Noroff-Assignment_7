@@ -107,7 +107,7 @@ public class MovieController {
     }
 
     /**
-     * Update Characters in Movies by Ids & Id. For each new Character Id added iterate over and add that Character to Movie.
+     * Update Characters in Movies by Ids & ID. For each new Character ID added iterate over and add that Character to Movie.
      * @param characterIds Array of Long Character ids.
      * @param movieId movie Id to update.
      * @return Movie with updated Characters.
