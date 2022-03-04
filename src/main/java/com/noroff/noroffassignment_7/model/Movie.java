@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Create a movie class with fields id, title, genre, release year, director name, imageUrl, trailerUrl.
+ * Use annotations in the fields, and relational database in movies.
+ * Franchise can include several movies, one movie contains many characters
+ * and a character plays in multiple movies.
+ * Use a list of characters and a get character list method to get all characters in a movie.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -73,6 +80,10 @@ public class Movie {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Character> characters = new ArrayList<>();
 
+    /**
+     * Takes the list of characters and then converts it to a list of Long to get characterIds
+     * @return characters in a list of type long
+     */
     @JsonGetter("characters")
     public List<Long> getCharacters() {
         return characters.stream().map(Character::getId).collect(Collectors.toList());

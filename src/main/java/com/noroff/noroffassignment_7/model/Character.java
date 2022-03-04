@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Create a character class with fields id, name, alias, gender and imageUrl.
+ * Use annotations in the fields, and relational database(ManyToMany) in movies.
+ * One movie contains many characters and a character plays in multiple movies.
+ */
 @Entity
 @Table(name = "character", schema = "public")
 public class Character {
@@ -53,8 +58,12 @@ public class Character {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Movie> movies = new ArrayList<>();
 
+    /**
+     * Takes the list of movies and then converts it to a list of Long to get movieIds
+     * @return movies in a list of type long
+     */
     @JsonGetter("movies")
-    public List<Long> getMoviesList() {
+    public List<Long> getMovies() {
         return movies.stream().map(Movie::getId).collect(Collectors.toList());
     }
 }
