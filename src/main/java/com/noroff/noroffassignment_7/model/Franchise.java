@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Creat a franchise class with fields id, name and description.
+ * Use annotations in the fields, and relational database (ManyToMany) in movies.
+ *One movie belongs to one franchise, but a franchise contains many movies.
+ * Use a list of movies and a get movie list method to get all movies in franchise.
+ */
 @Entity
 @Table(name = "franchise", schema = "public")
 public class Franchise {
@@ -43,6 +49,10 @@ public class Franchise {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Movie> movies = new ArrayList<>();
 
+    /**
+     * Takes the list of movies and then converts it to a list of Long to get movieIds
+     * @return movies in a list of type long
+     */
     @JsonGetter("movies")
     public List<Long> getMovies() {
         return movies.stream().map(Movie::getId).collect(Collectors.toList());
