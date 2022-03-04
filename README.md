@@ -6,7 +6,7 @@
   <p align="center">
     Movie Characters API
     <br />
-    <a href="#">View Demo</a>
+    <a href="https://noroff-assignment7.herokuapp.com/swagger-ui/index.html">View Demo</a>
   </p>
 </div>
 
@@ -15,11 +15,12 @@
 2. [Build & Deploy](#build--deploy)
 2. [Install](#install)
 4. [Usage](#usage)
-5. [Maintainers](#maintainers)
-6. [Contributing](#contributing)
-7. [Conventions](#conventions)
-8. [License](#license)
-9. [Contact](#contact)
+5. [Demo](#demo)
+6. [Maintainers](#maintainers)
+7. [Contributing](#contributing)
+8. [Conventions](#conventions)
+9. [License](#license)
+10. [Contact](#contact)
 
 # About the project
 
@@ -65,6 +66,9 @@ Rigth click & press 'Run Application.java'
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+# Demo
+Heroku | Swagger-UI: <a href="https://noroff-assignment7.herokuapp.com/swagger-ui/index.html">https://noroff-assignment7.herokuapp.com/swagger-ui/index.html</a>
 
 # Maintainers
 [@Cusatelli](https://github.com/Cusatelli)  
